@@ -35,10 +35,10 @@ export default [
       'simple-import-sort/exports': 'error',
       'react/jsx-no-target-blank': 'off',
       'react/prop-types': 'off',
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
+      // 'react-refresh/only-export-components': [
+      //   'warn',
+      //   { allowConstantExport: true },
+      // ],
     },
   },
   eslintConfigPrettier,

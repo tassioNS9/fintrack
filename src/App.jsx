@@ -4,7 +4,7 @@ const App = () => {
   return (
     <div className="flex flex-col px-4 text-red-600">
       Hello Wgggggggorld
-      <Button className="w-[200px]">Hello World</Button>
+      <Button className="bg-primary-blue w-[200px]">Hello World</Button>
     </div>
   );
 };
