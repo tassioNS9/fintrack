@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Link } from 'react-router';
 
 const SignupPage = () => {
@@ -30,6 +31,20 @@ const SignupPage = () => {
           />
           <PasswordInput />
           <PasswordInput placeholder="Digite sua senha novamente" />
+          <div className="items-top flex space-x-2">
+            <Checkbox id="terms1" />
+            <div className="grid gap-1.5 leading-none">
+              <label
+                htmlFor="terms1"
+                className="text-xs text-muted-foreground opacity-75"
+              >
+                Ao clicar em “Criar conta”, você aceita{' '}
+                <a className="text-white underline" href="#">
+                  nosso termo de uso e política de privacidade.
+                </a>
+              </label>
+            </div>
+          </div>
         </CardContent>
         <CardFooter className="flex-col gap-2">
           <Button type="submit" className="w-full">
