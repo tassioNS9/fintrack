@@ -1,10 +1,10 @@
-import js from '@eslint/js'
-import eslintConfigPrettier from 'eslint-config-prettier'
-import react from 'eslint-plugin-react' 
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import simpleImportSort from 'eslint-plugin-simple-import-sort'
-import globals from 'globals'
+import js from '@eslint/js';
+import eslintConfigPrettier from 'eslint-config-prettier';
+import react from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
+import globals from 'globals';
 
 export default [
   { ignores: ['dist'] },
@@ -34,11 +34,12 @@ export default [
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
       'react/jsx-no-target-blank': 'off',
+      'react/prop-types': 'off',
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
       ],
     },
   },
-  eslintConfigPrettier
-]
+  eslintConfigPrettier,
+];

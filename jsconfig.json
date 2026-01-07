@@ -1,0 +1,2 @@
+{ "compilerOptions": { "baseUrl": ".", "paths": { "@/*": ["./src/*"] } } }
+// Direciona o @/ para o src para melhorar os imports
