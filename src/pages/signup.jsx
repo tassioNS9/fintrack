@@ -1,14 +1,11 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2Icon } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { Link } from 'react-router';
+import { z } from 'zod';
+
 import PasswordInput from '@/components/password-input';
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
 import {
   Card,
   CardContent,
@@ -17,12 +14,16 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Link } from 'react-router';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 
 const signupFormSchema = z
   .object({
@@ -78,7 +79,7 @@ const SignupPage = () => {
     <div className="flex h-screen w-screen flex-col items-center justify-center gap-3">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
-          <Card className="w-[350px]">
+          <Card className="w-[400px]">
             <CardHeader>
               <CardTitle>Crie a sua conta</CardTitle>
               <CardDescription>Insira os seus dados abaixo.</CardDescription>
