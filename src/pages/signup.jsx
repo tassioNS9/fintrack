@@ -1,10 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
 import { Loader2Icon } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router';
-import { toast } from 'sonner';
 import { z } from 'zod';
 
 import PasswordInput from '@/components/password-input';
@@ -27,7 +25,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { api } from '@/lib/axios';
+import { AuthContext } from '@/contexts/auth';
 
 const signupFormSchema = z
   .object({
@@ -62,20 +60,8 @@ const signupFormSchema = z
     path: ['passwordConfirmation'],
   });
 const SignupPage = () => {
-  const [user, setUser] = useState(null);
-  const signupMutation = useMutation({
-    mutationKey: ['signup'],
-    mutationFn: async (variables) => {
-      const response = await api.post('/users', {
-        first_name: variables.firstName,
-        last_name: variables.lastName,
-        email: variables.email,
-        password: variables.password,
-      });
+  const { user, signup } = useContext(AuthContext);
 
-      return response.data;
-    },
-  });
   const form = useForm({
     resolver: zodResolver(signupFormSchema),
     defaultValues: {
@@ -88,42 +74,8 @@ const SignupPage = () => {
     },
   });
 
-  useEffect(() => {
-    const init = async () => {
-      try {
-        const accessToken = localStorage.getItem('accessToken');
-        const refreshToken = localStorage.getItem('refreshToken');
-        if (!accessToken && !refreshToken) return;
-        const response = await api.get('/users/me', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        setUser(response.data);
-      } catch (e) {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        console.log(e);
-      }
-    };
-    init();
-  }, []);
+  const handleSubmit = async (data) => signup(data);
 
-  const handleSubmit = async (data) => {
-    signupMutation.mutate(data, {
-      onSuccess: (createdUser) => {
-        const accessToken = createdUser.tokens.accessToken;
-        const refreshToken = createdUser.tokens.refreshToken;
-        setUser(createdUser);
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
-        toast.success('Conta criada com Sucesso!');
-      },
-      onError: () => {
-        toast.error('Error ao criar a conta!');
-      },
-    });
-  };
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center gap-3">
       <Form {...form}>
