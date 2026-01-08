@@ -1,27 +1,34 @@
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useState } from 'react';
-import { EyeIcon, EyeClosed } from 'lucide-react';
+import { EyeIcon, EyeOffIcon } from 'lucide-react';
+import { forwardRef, useState } from 'react';
 
-const PasswordInput = ({ placeholder = 'Digite sua senha' }) => {
-  const [passwordIsVisible, setPasswordIsVisible] = useState(false);
-  return (
-    <div className="relative">
-      <Input
-        id="password"
-        type={passwordIsVisible ? 'text' : 'password'}
-        placeholder={placeholder}
-        required
-      />
-      <Button
-        onClick={() => setPasswordIsVisible((prev) => !prev)}
-        variant="ghost"
-        className="absolute bottom-0 right-0 top-0 my-auto mr-2 h-8 w-8 text-muted-foreground"
-      >
-        {passwordIsVisible ? <EyeIcon /> : <EyeClosed />}
-      </Button>
-    </div>
-  );
-};
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+
+const PasswordInput = forwardRef(
+  ({ placeholder = 'Digite sua senha', ...props }, ref) => {
+    const [passwordIsVisible, setPasswordIsVisible] = useState(false);
+
+    return (
+      <div className="relative">
+        <Input
+          type={passwordIsVisible ? 'text' : 'password'}
+          placeholder={placeholder}
+          ref={ref}
+          {...props}
+        />
+        <Button
+          variant="ghost"
+          className="absolute bottom-0 right-0 top-0 my-auto mr-1 h-8 w-8 text-muted-foreground"
+          onClick={() => setPasswordIsVisible((prev) => !prev)}
+          type="button"
+        >
+          {passwordIsVisible ? <EyeOffIcon /> : <EyeIcon />}
+        </Button>
+      </div>
+    );
+  }
+);
+
+PasswordInput.displayName = 'PasswordInput';
 
 export default PasswordInput;
