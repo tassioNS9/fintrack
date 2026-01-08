@@ -106,6 +106,7 @@ const SignupPage = () => {
         console.log(e);
       }
     };
+    init();
   }, []);
 
   const handleSubmit = async (data) => {

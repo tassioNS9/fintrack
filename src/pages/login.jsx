@@ -1,7 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 import { Loader2Icon } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 import PasswordInput from '@/components/password-input';
@@ -23,6 +26,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { api } from '@/lib/axios';
 
 const loginFormSchema = z.object({
   email: z
@@ -39,6 +43,20 @@ const loginFormSchema = z.object({
   }),
 });
 const LoginPage = () => {
+  const [user, setUser] = useState(null);
+  let navigate = useNavigate();
+  const loginMutation = useMutation({
+    mutationKey: ['login'],
+    mutationFn: async (variables) => {
+      const response = await api.post('/login', {
+        email: variables.email,
+        password: variables.password,
+      });
+
+      return response.data;
+    },
+  });
+
   const form = useForm({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
@@ -47,10 +65,41 @@ const LoginPage = () => {
     },
   });
 
+  useEffect(() => {
+    const init = async () => {
+      try {
+        const accessToken = localStorage.getItem('accessToken');
+        const refreshToken = localStorage.getItem('refreshToken');
+        if (!accessToken && !refreshToken) return;
+        const response = await api.get('/users/me', {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        setUser(response.data);
+      } catch (e) {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        console.log(e);
+      }
+    };
+    init();
+  }, []);
+
   const handleSubmit = async (data) => {
-    await setTimeout(() => {
-      console.log(data);
-    }, 5000);
+    loginMutation.mutate(data, {
+      onSuccess: (loggedUser) => {
+        const accessToken = loggedUser.tokens.accessToken;
+        const refreshToken = loggedUser.tokens.refreshToken;
+        setUser(loggedUser);
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
+        navigate('/');
+      },
+      onError: () => {
+        toast.error('Error ao Fazer Login!');
+      },
+    });
   };
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center gap-3">
