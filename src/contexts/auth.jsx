@@ -3,6 +3,10 @@ import { createContext, useState } from 'react';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
 
+import {
+  LOCAL_STORAGE_ACCESS_TOKEN_KEY,
+  LOCAL_STORAGE_REFRESH_TOKEN_KEY,
+} from '@/constants/local-storage';
 import { api } from '@/lib/axios';
 export const AuthContext = createContext({
   user: null,
@@ -12,17 +16,14 @@ export const AuthContext = createContext({
   isInitialize: true,
 });
 
-const LOCAL_STORAGE_ACCESS_TOKEN = 'accessToken';
-const LOCAL_STORAGE_REFRESH_TOKEN = 'refreshToken';
-
 const setTokens = (tokens) => {
-  localStorage.setItem(LOCAL_STORAGE_ACCESS_TOKEN, tokens.accessToken);
-  localStorage.setItem(LOCAL_STORAGE_REFRESH_TOKEN, tokens.refreshToken);
+  localStorage.setItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY, tokens.accessToken);
+  localStorage.setItem(LOCAL_STORAGE_REFRESH_TOKEN_KEY, tokens.refreshToken);
 };
 
 const removeTokens = () => {
-  localStorage.removeItem(LOCAL_STORAGE_ACCESS_TOKEN);
-  localStorage.removeItem(LOCAL_STORAGE_REFRESH_TOKEN);
+  localStorage.removeItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY);
+  localStorage.removeItem(LOCAL_STORAGE_REFRESH_TOKEN_KEY);
 };
 
 export const AuthContextProvider = ({ children }) => {
@@ -58,8 +59,12 @@ export const AuthContextProvider = ({ children }) => {
     const init = async () => {
       try {
         setIsinitialize(true);
-        const accessToken = localStorage.getItem(LOCAL_STORAGE_ACCESS_TOKEN);
-        const refreshToken = localStorage.getItem(LOCAL_STORAGE_REFRESH_TOKEN);
+        const accessToken = localStorage.getItem(
+          LOCAL_STORAGE_ACCESS_TOKEN_KEY
+        );
+        const refreshToken = localStorage.getItem(
+          LOCAL_STORAGE_REFRESH_TOKEN_KEY
+        );
         if (!accessToken && !refreshToken) return;
         const response = await api.get('/users/me', {
           headers: {
