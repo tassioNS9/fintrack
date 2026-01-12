@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2Icon } from 'lucide-react';
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router';
+import { Link, Navigate } from 'react-router';
 import { z } from 'zod';
 
 import PasswordInput from '@/components/password-input';
@@ -41,7 +41,7 @@ const loginFormSchema = z.object({
   }),
 });
 const LoginPage = () => {
-  const { user, login } = useContext(AuthContext);
+  const { user, login, isInitialize } = useContext(AuthContext);
 
   const form = useForm({
     resolver: zodResolver(loginFormSchema),
@@ -55,8 +55,11 @@ const LoginPage = () => {
     return login(data);
   };
 
+  if (isInitialize) {
+    return null;
+  }
   if (user) {
-    return <div>Olá, {user.first_name}</div>;
+    return <Navigate to="/" />;
   }
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center gap-3">
