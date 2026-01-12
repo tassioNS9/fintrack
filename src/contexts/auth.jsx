@@ -74,7 +74,6 @@ export const AuthContextProvider = ({ children }) => {
         setUser(response.data);
       } catch (e) {
         setUser(null);
-        removeTokens();
         console.log(e);
       } finally {
         setIsinitialize(false);
