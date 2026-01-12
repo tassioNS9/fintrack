@@ -7,7 +7,7 @@ import {
   LOCAL_STORAGE_ACCESS_TOKEN_KEY,
   LOCAL_STORAGE_REFRESH_TOKEN_KEY,
 } from '@/constants/local-storage';
-import { api } from '@/lib/axios';
+import { api, protectedApi } from '@/lib/axios';
 export const AuthContext = createContext({
   user: null,
   login: () => {},
@@ -66,7 +66,7 @@ export const AuthContextProvider = ({ children }) => {
           LOCAL_STORAGE_REFRESH_TOKEN_KEY
         );
         if (!accessToken && !refreshToken) return;
-        const response = await api.get('/users/me', {
+        const response = await protectedApi.get('/users/me', {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },

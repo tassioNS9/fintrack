@@ -5,7 +5,11 @@ export const api = axios.create({
   baseURL: 'http://localhost:8000/api',
 });
 
-api.interceptors.request.use((request) => {
+export const protectedApi = axios.create({
+  baseURL: 'http://localhost:8000/api',
+});
+
+protectedApi.interceptors.request.use((request) => {
   const accessToken = localStorage.getItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY);
   if (!accessToken) {
     return request;
