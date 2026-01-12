@@ -7,7 +7,7 @@ import {
   LOCAL_STORAGE_ACCESS_TOKEN_KEY,
   LOCAL_STORAGE_REFRESH_TOKEN_KEY,
 } from '@/constants/local-storage';
-import { api, protectedApi } from '@/lib/axios';
+import { UserService } from '@/services/users';
 export const AuthContext = createContext({
   user: null,
   login: () => {},
@@ -32,26 +32,16 @@ export const AuthContextProvider = ({ children }) => {
   const signupMutation = useMutation({
     mutationKey: ['signup'],
     mutationFn: async (variables) => {
-      const response = await api.post('/users', {
-        first_name: variables.firstName,
-        last_name: variables.lastName,
-        email: variables.email,
-        password: variables.password,
-      });
-
-      return response.data;
+      const response = await UserService.signup(variables);
+      return response;
     },
   });
 
   const loginMutation = useMutation({
     mutationKey: ['login'],
     mutationFn: async (variables) => {
-      const response = await api.post('/login', {
-        email: variables.email,
-        password: variables.password,
-      });
-
-      return response.data;
+      const response = await UserService.login(variables);
+      return response;
     },
   });
 
@@ -66,12 +56,8 @@ export const AuthContextProvider = ({ children }) => {
           LOCAL_STORAGE_REFRESH_TOKEN_KEY
         );
         if (!accessToken && !refreshToken) return;
-        const response = await protectedApi.get('/users/me', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        setUser(response.data);
+        const response = await UserService.me();
+        setUser(response);
       } catch (e) {
         setUser(null);
         console.log(e);
@@ -86,7 +72,7 @@ export const AuthContextProvider = ({ children }) => {
     signupMutation.mutate(data, {
       onSuccess: (createdUser) => {
         setUser(createdUser);
-        setTokens(createdUser.tokens);
+        //setTokens(createdUser.tokens);
         toast.success('Conta criada com Sucesso!');
       },
       onError: () => {

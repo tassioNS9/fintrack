@@ -35,7 +35,7 @@ protectedApi.interceptors.response.use(
       // e garante que a rota seja a /users/refresh-token
       error.response.status === 401 &&
       !request._retry &&
-      !request.url.includes('/users/refresh-token')
+      !request.url.includes('/refresh-token')
     ) {
       request._retry = true;
       try {
