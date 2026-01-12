@@ -1,9 +1,10 @@
 import { useContext } from 'react';
 import { Navigate } from 'react-router';
 
+import { Button } from '@/components/ui/button';
 import { AuthContext } from '@/contexts/auth';
 const HomePage = () => {
-  const { user, isInitialize } = useContext(AuthContext);
+  const { user, isInitialize, signOut } = useContext(AuthContext);
 
   if (isInitialize) {
     return null;
@@ -12,7 +13,12 @@ const HomePage = () => {
   if (!user) {
     return <Navigate to="login" />;
   }
-  return <div>Home Page</div>;
+  return (
+    <div className="flex">
+      Home Page
+      <Button onClick={signOut}>Sair</Button>
+    </div>
+  );
 };
 
 export default HomePage;
