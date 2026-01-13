@@ -39,4 +39,14 @@ export const UserService = {
       lastName: response.data.last_name,
     };
   },
+
+  getBalance: async () => {
+    const response = await protectedApi.get('/users/balance');
+    return {
+      balance: response.data.balance,
+      expenses: response.data.expenses,
+      earnings: response.data.earnings,
+      investments: response.data.investments,
+    };
+  },
 };
