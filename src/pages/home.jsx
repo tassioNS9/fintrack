@@ -1,4 +1,3 @@
-import { PlusIcon } from 'lucide-react';
 import {
   PiggyBankIcon,
   TrendingDownIcon,
@@ -9,10 +8,10 @@ import { useContext } from 'react';
 import { Navigate } from 'react-router';
 
 import { useGetUserBalance } from '@/api/hooks/user';
+import AddTransactionButton from '@/components/add-transaction-button';
 import BalanceItem from '@/components/balance-item';
 import DateSelection from '@/components/date-selection';
 import Header from '@/components/header';
-import { Button } from '@/components/ui/button';
 import { AuthContext } from '@/contexts/auth';
 const HomePage = () => {
   const { user, isInitialize } = useContext(AuthContext);
@@ -36,10 +35,7 @@ const HomePage = () => {
           <div className="flex items-center gap-2">
             <DateSelection />
             {/* Seletor de Data */}
-            <Button>
-              <PlusIcon />
-              Nova Transação
-            </Button>
+            <AddTransactionButton />
           </div>
         </div>
 
