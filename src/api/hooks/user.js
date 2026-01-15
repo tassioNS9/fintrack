@@ -18,7 +18,9 @@ export const useGetUserBalance = ({ from, to }) => {
     queryFn: () => {
       return UserService.getBalance({ from, to });
     },
+    // O StaleTime garante que a query vai ficar "fresca" por 5 minutos
     staleTime: 1000 * 60 * 5, // 5 minutes
-    //enabled: Boolean(from) && Boolean(to) && Boolean(user.id),
+    // Garante que a query só será executada se eu tiver o from e o to
+    enabled: Boolean(from) && Boolean(to),
   });
 };
