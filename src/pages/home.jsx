@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { useContext } from 'react';
 import { Navigate } from 'react-router';
+import { useSearchParams } from 'react-router';
 
 import { useGetUserBalance } from '@/api/hooks/user';
 import AddTransactionButton from '@/components/add-transaction-button';
@@ -15,10 +16,10 @@ import Header from '@/components/header';
 import { AuthContext } from '@/contexts/auth';
 const HomePage = () => {
   const { user, isInitialize } = useContext(AuthContext);
-  // const [searchParams] = useSearchParams();
-  // const from = searchParams.get('from'); // YYYY-MM-DD
-  // const to = searchParams.get('to'); // YYYY-MM-DD
-  const { data } = useGetUserBalance();
+  const [searchParams] = useSearchParams();
+  const from = searchParams.get('from'); // YYYY-MM-DD
+  const to = searchParams.get('to'); // YYYY-MM-DD
+  const { data } = useGetUserBalance({ from, to });
   if (isInitialize) {
     return null;
   }

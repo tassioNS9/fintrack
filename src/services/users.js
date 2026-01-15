@@ -40,13 +40,13 @@ export const UserService = {
     };
   },
 
-  getBalance: async () => {
-    const response = await protectedApi.get('/users/balance');
-    return {
-      balance: response.data.balance,
-      expenses: response.data.expenses,
-      earnings: response.data.earnings,
-      investments: response.data.investments,
-    };
+  getBalance: async (input) => {
+    const queryParams = new URLSearchParams();
+    queryParams.set('from', input.from);
+    queryParams.set('to', input.to);
+    const response = await protectedApi.get(
+      `/users/balance?${queryParams.toString()}`
+    );
+    return response.data;
   },
 };

@@ -10,13 +10,14 @@ export const getUserBalanceQueryKey = ({ userId, from, to }) => {
   return ['balance', userId, from, to];
 };
 
-export const useGetUserBalance = () => {
+export const useGetUserBalance = ({ from, to }) => {
   // Temos que passar o id do usuário na query, pois se não outro usuário a ser logado vai com dados do cache dessa requisição
   const { user } = useContext(AuthContext);
+  console.log(user, 'user');
   return useQuery({
-    queryKey: ['getBalance', user?.id],
+    queryKey: getUserBalanceQueryKey({ userId: user?.id, from, to }),
     queryFn: () => {
-      return UserService.getBalance();
+      return UserService.getBalance({ from, to });
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
     //enabled: Boolean(from) && Boolean(to) && Boolean(user.id),
