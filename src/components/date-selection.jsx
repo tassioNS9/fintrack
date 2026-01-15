@@ -1,5 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { addMonths, format, isValid } from 'date-fns';
+import { addMonths, format, isDate, isValid } from 'date-fns';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 
@@ -21,11 +21,16 @@ const getInitialDateState = (searchParams) => {
   }
   // Neste ponto, eu tenho o "from" E o "to"
   // Eles são válidos?
-  const datesAreInvalid = !isValid(new Date(from)) || !isValid(new Date(to));
+  const datesAreInvalid =
+    !isValid(new Date(from)) ||
+    !isValid(new Date(to)) ||
+    !isDate(from) ||
+    !isDate(to);
   // Se não forem válidos, eu retorno o default
   if (datesAreInvalid) {
     return defaultDate;
   }
+
   // Neste ponto, ambas as datas são válidas
   return {
     from: new Date(from + 'T00:00:00'),
@@ -38,6 +43,8 @@ const DateSelection = () => {
   const { user } = useContext(AuthContext);
   const [searchParams] = useSearchParams();
   const [date, setDate] = useState(getInitialDateState(searchParams));
+
+  // Formata a data para o formato YYYY-MM-DD
   const formatDateToQueryParam = (date) => format(date, 'yyyy-MM-dd');
 
   const navigate = useNavigate();
@@ -49,7 +56,12 @@ const DateSelection = () => {
     queryParams.set('to', formatDateToQueryParam(date.to));
     navigate(`/?${queryParams.toString()}`);
     queryClient.invalidateQueries({
-      queryKey: ['balance', user.id],
+      queryKey: [
+        'balance',
+        user.id,
+        formatDateToQueryParam(date.from),
+        formatDateToQueryParam(date.to),
+      ],
     });
   }, [navigate, date, queryClient, user.id]);
   return (

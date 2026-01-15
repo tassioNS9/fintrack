@@ -15,6 +15,7 @@ export const useCreateTransactionForm = ({ onSuccess, onError }) => {
       date: new Date(),
       type: 'EARNING',
     },
+    // O shouldUnregister faz com que os campos que saem do formulário sejam "desregistrados"
     shouldUnregister: true,
   });
   const onSubmit = async (data) => {
