@@ -13,7 +13,6 @@ export const getUserBalanceQueryKey = ({ userId, from, to }) => {
 export const useGetUserBalance = ({ from, to }) => {
   // Temos que passar o id do usuário na query, pois se não outro usuário a ser logado vai com dados do cache dessa requisição
   const { user } = useContext(AuthContext);
-  console.log(user, 'user');
   return useQuery({
     queryKey: getUserBalanceQueryKey({ userId: user?.id, from, to }),
     queryFn: () => {
