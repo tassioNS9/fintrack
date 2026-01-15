@@ -6,6 +6,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { Toaster } from 'sonner';
 
+import PrivateRoute from './components/private-route';
 import { AuthContextProvider } from './contexts/auth';
 import HomePage from './pages/home';
 import LoginPage from './pages/login';
@@ -21,7 +22,9 @@ createRoot(document.getElementById('root')).render(
       <AuthContextProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route element={<PrivateRoute />}>
+              <Route path="/" element={<HomePage />} />
+            </Route>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="*" element={<NotFoundPage />} />
