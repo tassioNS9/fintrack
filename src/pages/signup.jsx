@@ -60,7 +60,7 @@ const signupFormSchema = z
     path: ['passwordConfirmation'],
   });
 const SignupPage = () => {
-  const { user, signup } = useContext(AuthContext);
+  const { signup } = useContext(AuthContext);
 
   const form = useForm({
     resolver: zodResolver(signupFormSchema),

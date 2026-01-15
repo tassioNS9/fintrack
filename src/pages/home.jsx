@@ -5,7 +5,6 @@ import {
   WalletIcon,
 } from 'lucide-react';
 import { useContext } from 'react';
-import { Navigate } from 'react-router';
 import { useSearchParams } from 'react-router';
 
 import { useGetUserBalance } from '@/api/hooks/user';
@@ -15,7 +14,7 @@ import DateSelection from '@/components/date-selection';
 import Header from '@/components/header';
 import { AuthContext } from '@/contexts/auth';
 const HomePage = () => {
-  const { user, isInitialize } = useContext(AuthContext);
+  const { isInitialize } = useContext(AuthContext);
   const [searchParams] = useSearchParams();
   const from = searchParams.get('from'); // YYYY-MM-DD
   const to = searchParams.get('to'); // YYYY-MM-DD
@@ -24,9 +23,6 @@ const HomePage = () => {
     return null;
   }
 
-  if (!user) {
-    return <Navigate to="login" />;
-  }
   return (
     <>
       <Header />
