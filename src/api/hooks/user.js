@@ -4,8 +4,9 @@ import { useContext } from 'react';
 import { UserService } from '@/api/services/users';
 import { AuthContext } from '@/contexts/auth';
 export const getUserBalanceQueryKey = ({ userId, from, to }) => {
+  // garante que se nao tiver o from e o to, ele retorna uma query key sem esses valores
   if (!from || !to) {
-    return ['balance'];
+    return ['balance', userId];
   }
   return ['balance', userId, from, to];
 };
