@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useContext } from 'react';
 
+import { TransactionService } from '@/api/services/transaction';
 import { AuthContext } from '@/contexts/auth';
-import { TransactionService } from '@/services/transaction';
 
 export const createTransactionMutationKey = ['createTransaction'];
 

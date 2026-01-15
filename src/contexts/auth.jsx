@@ -3,11 +3,11 @@ import { createContext, useState } from 'react';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
 
+import { UserService } from '@/api/services/users';
 import {
   LOCAL_STORAGE_ACCESS_TOKEN_KEY,
   LOCAL_STORAGE_REFRESH_TOKEN_KEY,
 } from '@/constants/local-storage';
-import { UserService } from '@/services/users';
 export const AuthContext = createContext({
   user: null,
   login: () => {},
