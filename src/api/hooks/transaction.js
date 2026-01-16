@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useContext } from 'react';
 
 import { TransactionService } from '@/api/services/transaction';
@@ -25,4 +26,16 @@ export const getTransactionsQueryKey = ({ userId, from, to }) => {
     return ['getTransactions', userId];
   }
   return ['getTransactions', userId, from, to];
+};
+
+export const useGetTransactions = ({ from, to }) => {
+  const { user } = useContext(AuthContext);
+  return useQuery({
+    queryKey: getTransactionsQueryKey({ userId: user?.id, from, to }),
+    queryFn: () => {
+      return TransactionService.getAll({ from, to });
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    enabled: Boolean(from) && Boolean(to),
+  });
 };
