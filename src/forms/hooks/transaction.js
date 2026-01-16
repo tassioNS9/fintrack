@@ -42,16 +42,30 @@ export const useEditTransactionForm = ({ transaction, onSuccess, onError }) => {
   const { mutateAsync: updateTransaction } = useEditTransaction();
   const form = useForm({
     resolver: zodResolver(editTransactionFormSchema),
+    // O default values vai ser Usado na reenderização inicial do formulário mas como não temos o input de id,quando enviamos o form, ele não tem o id
     defaultValues: {
       id: transaction.id,
       name: transaction.name,
-      amount: transaction.amount,
-      date: transaction.date,
+      amount: parseFloat(transaction.amount),
+      date: new Date(transaction.date),
       type: transaction.type,
     },
     // O shouldUnregister faz com que os campos que saem do formulário sejam "desregistrados", resetando seus valores
     shouldUnregister: true,
   });
+
+  //Com o problema do id no envio do form, usamos o useEffect para setar o valor do id sempre que o form ou a transaction mudarem
+  // Mas a transition não vai mudar, vai ficar a mesma durante o ciclo de vida do form de edição
+  useEffect(() => {
+    form.reset({
+      name: transaction.name,
+      amount: parseFloat(transaction.amount),
+      date: getTransactionDate(transaction),
+      type: transaction.type,
+    });
+    form.setValue('id', transaction.id);
+  }, [form, transaction]);
+
   const onSubmit = async (data) => {
     await updateTransaction(data);
     try {
