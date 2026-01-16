@@ -5,6 +5,8 @@ import { useContext } from 'react';
 import { TransactionService } from '@/api/services/transaction';
 import { AuthContext } from '@/contexts/auth';
 
+import { getUserBalanceQueryKey } from './user';
+
 export const createTransactionMutationKey = ['createTransaction'];
 
 export const useCreateTransaction = () => {
@@ -13,6 +15,23 @@ export const useCreateTransaction = () => {
   return useMutation({
     mutationKey: createTransactionMutationKey,
     mutationFn: (input) => TransactionService.create(input),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: getTransactionsQueryKey({ userId: user.id }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: getUserBalanceQueryKey({ userId: user.id }),
+      });
+    },
+  });
+};
+
+export const useEditTransaction = () => {
+  const queryClient = useQueryClient();
+  const { user } = useContext(AuthContext);
+  return useMutation({
+    mutationKey: ['editTransaction'],
+    mutationFn: (input) => TransactionService.update(input),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: getTransactionsQueryKey({ userId: user.id }),
