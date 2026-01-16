@@ -10,4 +10,14 @@ export const TransactionService = {
     });
     return response.data;
   },
+
+  getAll: async ({ from, to }) => {
+    const queryParams = new URLSearchParams();
+    queryParams.set('from', from);
+    queryParams.set('to', to);
+    const response = await protectedApi.get(
+      `/transactions?${queryParams.toString()}`
+    );
+    return response.data;
+  },
 };
