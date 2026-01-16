@@ -12,6 +12,7 @@ import AddTransactionButton from '@/components/add-transaction-button';
 import BalanceItem from '@/components/balance-item';
 import DateSelection from '@/components/date-selection';
 import Header from '@/components/header';
+import TransactionsTable from '@/components/transactions-table';
 import { AuthContext } from '@/contexts/auth';
 const HomePage = () => {
   const { isInitialize } = useContext(AuthContext);
@@ -60,6 +61,7 @@ const HomePage = () => {
             />
           </div>
         </div>
+        <TransactionsTable />
       </div>
     </>
   );
