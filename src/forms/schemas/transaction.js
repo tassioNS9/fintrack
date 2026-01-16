@@ -12,3 +12,8 @@ export const createTransactionFormSchema = z.object({
   }),
   type: z.enum(['EARNING', 'EXPENSE', 'INVESTMENT']),
 });
+
+// Para o formulário de edição, eu preciso do id também com os dados de criação
+export const editTransactionFormSchema = createTransactionFormSchema.extend({
+  id: z.string().uuid(),
+});
