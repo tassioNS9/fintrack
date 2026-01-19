@@ -12,6 +12,7 @@ import AddTransactionButton from '@/components/add-transaction-button';
 import BalanceItem from '@/components/balance-item';
 import DateSelection from '@/components/date-selection';
 import Header from '@/components/header';
+import { TransactionTypeChart } from '@/components/transaction-type-chart';
 import TransactionsTable from '@/components/transactions-table';
 import { AuthContext } from '@/contexts/auth';
 const HomePage = () => {
@@ -37,8 +38,8 @@ const HomePage = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-[2fr,1fr]">
-          <div className="grid grid-cols-2 grid-rows-2 gap-6">
+        <div className="grid grid-cols-[2fr,1fr] gap-6">
+          <div className="grid grid-cols-2 grid-rows-2 gap-4">
             <BalanceItem
               label="Saldo"
               amount={data?.balance}
@@ -60,6 +61,8 @@ const HomePage = () => {
               icon={<PiggyBankIcon className="text-primary-blue" size={16} />}
             />
           </div>
+
+          <TransactionTypeChart />
         </div>
         <TransactionsTable />
       </div>
